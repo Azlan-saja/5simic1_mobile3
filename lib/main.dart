@@ -1,4 +1,4 @@
-import 'package:aplikasi_5simic1_mobile3/view/home_view.dart';
+import 'package:aplikasi_5simic1_mobile3/view/login_view.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -10,8 +10,15 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-        home: HomeView(),
-      );
+    return MaterialApp(
+      theme: ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.teal,
+          brightness: Brightness.light,
+        ),
+      ),
+      home: LoginView(),
+    );
   }
 }
