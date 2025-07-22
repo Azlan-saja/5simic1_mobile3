@@ -1,4 +1,4 @@
-import 'package:aplikasi_5simic1_mobile3/view/login_view.dart';
+import 'package:aplikasi_5simic1_mobile3/views/login_view.dart';
 import 'package:flutter/material.dart';
 
 void main() {

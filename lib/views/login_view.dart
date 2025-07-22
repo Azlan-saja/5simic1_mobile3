@@ -10,6 +10,7 @@ class LoginView extends StatelessWidget {
       body: SafeArea(
         child: Padding(
           padding: EdgeInsetsGeometry.all(14),
+          // padding: EdgeInsets.all(14),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
