@@ -1,8 +1,64 @@
+import 'package:aplikasi_5simic1_mobile3/database/database_helper.dart';
+import 'package:aplikasi_5simic1_mobile3/models/user_model.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-class LoginView extends StatelessWidget {
+class LoginView extends StatefulWidget {
   const LoginView({super.key});
+
+  @override
+  State<LoginView> createState() => _LoginViewState();
+}
+
+class _LoginViewState extends State<LoginView> {
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
+  bool isVisible = false;
+  final db = DatabaseHelper();
+
+  Future<void> login() async {
+    try {
+      var response = await db.login(
+        UserModel(
+          userName: usernameController.text,
+          userPassword: passwordController.text,
+        ),
+      );
+
+      if (!mounted) return;
+
+      if (response == true) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Login success'),
+            backgroundColor: Colors.teal[400],
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+
+        // Navigasi ke halaman Notes jika login berhasil
+        // akan dibuat nanti setelah halaman Notes dibuat
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Login failed! Please try again.'),
+            backgroundColor: Colors.red,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    } catch (e) {
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Login failed! Please try again.'),
+          backgroundColor: Colors.red,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +90,7 @@ class LoginView extends StatelessWidget {
                 // 3. Input Username
                 SizedBox(height: 10),
                 TextFormField(
+                  controller: usernameController,
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.person),
                     hintText: "Username",
@@ -50,9 +107,20 @@ class LoginView extends StatelessWidget {
                 // 4. Input Password
                 SizedBox(height: 10),
                 TextFormField(
+                  obscureText: !isVisible,
+                  controller: passwordController,
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.lock),
-                    suffixIcon: Icon(Icons.visibility),
+                    suffixIcon: InkWell(
+                      onTap: () {
+                        setState(() {
+                          isVisible = !isVisible;
+                        });
+                      },
+                      child: Icon(
+                        isVisible ? Icons.visibility : Icons.visibility_off,
+                      ),
+                    ),
                     hintText: "Password",
                     border: OutlineInputBorder(
                       borderSide: BorderSide.none,
@@ -67,7 +135,9 @@ class LoginView extends StatelessWidget {
                 // 5. Tombol Login
                 SizedBox(height: 10),
                 FilledButton.icon(
-                  onPressed: () {},
+                  onPressed: () {
+                    login();
+                  },
                   label: Text("Login"),
                   icon: Icon(Icons.login),
                 ),
