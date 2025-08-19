@@ -1,6 +1,4 @@
 import 'package:aplikasi_5simic1_mobile3/controllers/login_controller.dart';
-import 'package:aplikasi_5simic1_mobile3/database/database_helper.dart';
-import 'package:aplikasi_5simic1_mobile3/models/user_model.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -47,15 +45,8 @@ class _LoginViewState extends State<LoginView> {
                   SizedBox(height: 10),
                   TextFormField(
                     controller: loginController.usernameController,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return "username is required";
-                      }
-                      return null;
-                    },
-                    onChanged: (value) {
-                      print(value);
-                    },
+                    validator: (value) => loginController.cekValidasi(
+                        label: 'Username', value: value),
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.person),
                       hintText: "Username",
@@ -74,19 +65,14 @@ class _LoginViewState extends State<LoginView> {
                   TextFormField(
                     obscureText: !loginController.isVisible,
                     controller: loginController.passwordController,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return "password is required";
-                      }
-                      return null;
-                    },
+                    validator: (value) => loginController.cekValidasi(
+                        label: 'Password', value: value),
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.lock),
                       suffixIcon: InkWell(
                         onTap: () {
                           setState(() {
-                            loginController.isVisible =
-                                !loginController.isVisible;
+                            loginController.lihatPassword();
                           });
                         },
                         child: Icon(

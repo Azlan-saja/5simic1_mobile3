@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:aplikasi_5simic1_mobile3/database/database_helper.dart';
 import 'package:aplikasi_5simic1_mobile3/models/user_model.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +8,17 @@ class LoginController {
   bool isVisible = false;
   final db = DatabaseHelper();
   final formKey = GlobalKey<FormState>();
+
+  void lihatPassword() {
+    isVisible = !isVisible;
+  }
+
+  String? cekValidasi({required String label, required String? value}) {
+    if (value!.isEmpty) {
+      return "$label is required";
+    }
+    return null;
+  }
 
   Future<void> login(BuildContext context) async {
     try {
