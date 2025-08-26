@@ -35,7 +35,7 @@ class DatabaseHelper {
     userId, 
     userName, 
     userPassword
-  ) VALUES (1, "admin", "password")
+  ) VALUES (1, "admin", "12345678")
   ''';
 
   // Initialize the database
