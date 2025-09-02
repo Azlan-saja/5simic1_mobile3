@@ -45,8 +45,6 @@ class LoginController {
             builder: (context) => HomeView(),
           ),
         );
-        // Navigasi ke halaman Notes jika login berhasil
-        // akan dibuat nanti setelah halaman Notes dibuat
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
