@@ -1,8 +1,11 @@
+import 'package:aplikasi_5simic1_mobile3/database/database_helper.dart';
 import 'package:aplikasi_5simic1_mobile3/views/home/home_view.dart';
 import 'package:aplikasi_5simic1_mobile3/views/login_view.dart';
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqlite_api.dart';
 
-void main() {
+void main() async {
+  DatabaseHelper().initDB;
   runApp(const MainApp());
 }
 

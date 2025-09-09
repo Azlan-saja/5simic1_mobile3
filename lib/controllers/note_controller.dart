@@ -1,5 +1,6 @@
 import 'package:aplikasi_5simic1_mobile3/database/database_helper.dart';
 import 'package:aplikasi_5simic1_mobile3/models/note_model.dart';
+import 'package:aplikasi_5simic1_mobile3/views/home/home_view.dart';
 import 'package:flutter/material.dart';
 
 class NoteController {
@@ -7,7 +8,12 @@ class NoteController {
   final contentController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   final db = DatabaseHelper();
-  late Future<List<NoteModel>> notes;
+  late List<NoteModel> notes;
+
+  Future<List<NoteModel>> getData() async {
+    notes = await db.getNotes();
+    return notes;
+  }
 
   String? cekValidator(String? value, {required String label}) {
     if (value!.isEmpty) {
@@ -36,7 +42,7 @@ class NoteController {
             behavior: SnackBarBehavior.floating,
           ),
         );
-        Navigator.pop(context);
+        Navigator.pop(context, 'OKE');
       } else {
         if (!context.mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(

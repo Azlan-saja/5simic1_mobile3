@@ -1,6 +1,7 @@
 import 'package:aplikasi_5simic1_mobile3/controllers/note_controller.dart';
 import 'package:aplikasi_5simic1_mobile3/views/home/create_view.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -15,7 +16,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
-    noteController.notes = noteController.db.getNotes();
+    noteController.getData();
   }
 
   @override
@@ -51,9 +52,12 @@ class _HomeViewState extends State<HomeView> {
                 contentPadding: EdgeInsets.only(top: 14),
               ),
             ),
+            SizedBox(
+              height: 10,
+            ),
             Expanded(
               child: FutureBuilder(
-                future: noteController.notes,
+                future: noteController.getData(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(
@@ -68,12 +72,26 @@ class _HomeViewState extends State<HomeView> {
                       child: Text('Data Kosong. '),
                     );
                   } else {
-                    // return Text('Oke Ada Data');
                     final items = snapshot.data!;
                     return ListView.builder(
                       itemCount: items.length,
                       itemBuilder: (context, index) {
-                        return Text(items[index].noteTitle);
+                        final note = items[index];
+                        return ListTile(
+                          tileColor: Colors.teal.withAlpha(40),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 6),
+                          title: Text(
+                            note.noteTitle,
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16),
+                          ),
+                          subtitle: Text(
+                            '${note.noteContent}\n${DateFormat("yMMMd").format(DateTime.parse(note.createdAt))}',
+                            style: const TextStyle(
+                                color: Colors.teal, fontSize: 14),
+                          ),
+                        );
                       },
                     );
                   }
@@ -84,13 +102,17 @@ class _HomeViewState extends State<HomeView> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
+        onPressed: () async {
+          final cekSimpan = await Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => CreateView(),
             ),
           );
+          if (cekSimpan != null && cekSimpan == 'OKE') {
+            noteController.getData();
+            setState(() {});
+          }
         },
         backgroundColor: Colors.teal,
         foregroundColor: Colors.white,

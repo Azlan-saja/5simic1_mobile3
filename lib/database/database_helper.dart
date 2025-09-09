@@ -11,7 +11,7 @@ class DatabaseHelper {
 
   // Configuration variables
   static Database? _database;
-  final String databaseName = "note.db";
+  final String databaseName = "note2.db";
   final int databaseVersion = 1;
 
   // Create user table
