@@ -7,6 +7,7 @@ class NoteController {
   final contentController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   final db = DatabaseHelper();
+  late Future<List<NoteModel>> notes;
 
   String? cekValidator(String? value, {required String label}) {
     if (value!.isEmpty) {

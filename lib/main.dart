@@ -1,3 +1,4 @@
+import 'package:aplikasi_5simic1_mobile3/views/home/home_view.dart';
 import 'package:aplikasi_5simic1_mobile3/views/login_view.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +20,8 @@ class MainApp extends StatelessWidget {
           brightness: Brightness.light,
         ),
       ),
-      home: LoginView(),
+      // home: LoginView(),
+      home: HomeView(),
     );
   }
 }

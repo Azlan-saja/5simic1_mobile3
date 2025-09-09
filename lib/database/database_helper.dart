@@ -78,4 +78,14 @@ class DatabaseHelper {
     final Database db = await database;
     return db.insert('notes', note.toMap());
   }
+
+  Future<List<NoteModel>> getNotes() async {
+    final Database db = await database;
+    final result = await db.query('notes');
+    return result
+        .map(
+          (e) => NoteModel.fromMap(e),
+        )
+        .toList();
+  }
 }
