@@ -17,8 +17,7 @@ class _LoginViewState extends State<LoginView> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsetsGeometry.all(14),
-          // padding: EdgeInsets.all(14),
+          padding: EdgeInsets.all(14),
           child: SingleChildScrollView(
             child: Form(
               key: loginController.formKey,
