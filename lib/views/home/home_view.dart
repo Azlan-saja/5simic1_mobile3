@@ -1,5 +1,6 @@
 import 'package:aplikasi_5simic1_mobile3/controllers/note_controller.dart';
 import 'package:aplikasi_5simic1_mobile3/views/home/create_view.dart';
+import 'package:aplikasi_5simic1_mobile3/views/home/update_view.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -73,11 +74,24 @@ class _HomeViewState extends State<HomeView> {
                     );
                   } else {
                     final items = snapshot.data!;
-                    return ListView.builder(
+                    return ListView.separated(
+                      separatorBuilder: (context, index) =>
+                          Divider(color: Colors.teal.shade100),
+                      padding: EdgeInsets.all(8),
                       itemCount: items.length,
                       itemBuilder: (context, index) {
                         final note = items[index];
                         return ListTile(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => UpdateView(
+                                  note: note,
+                                ),
+                              ),
+                            );
+                          },
                           tileColor: Colors.teal.withAlpha(40),
                           contentPadding: const EdgeInsets.symmetric(
                               horizontal: 16, vertical: 6),

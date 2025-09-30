@@ -10,6 +10,10 @@ class NoteController {
   final db = DatabaseHelper();
   late List<NoteModel> notes;
 
+  late TextEditingController titleUpdateController;
+  late TextEditingController contenUpdatetController;
+  final formKeyUpdate = GlobalKey<FormState>();
+
   Future<List<NoteModel>> getData() async {
     notes = await db.getNotes();
     return notes;
@@ -48,6 +52,52 @@ class NoteController {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: const Text('Gagal Simpan Data.'),
+            backgroundColor: Colors.red[400],
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    } catch (e) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error kawan. $e'),
+          backgroundColor: Colors.red[400],
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    }
+  }
+
+  void updateData(BuildContext context, {required int noteId}) async {
+    if (!formKeyUpdate.currentState!.validate()) return;
+    // Proses Update
+    try {
+      int result = await db.updateNote(
+        titleUpdateController.text,
+        contenUpdatetController.text,
+        noteId,
+      );
+
+      if (result > 0) {
+        if (!context.mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Perubahan Berhasil disimpan.'),
+            backgroundColor: Colors.teal[400],
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => const HomeView()),
+          (route) => false,
+        );
+      } else {
+        if (!context.mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Gagal Update Data.'),
             backgroundColor: Colors.red[400],
             behavior: SnackBarBehavior.floating,
           ),
