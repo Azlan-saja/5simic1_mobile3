@@ -14,8 +14,14 @@ class NoteController {
   late TextEditingController contenUpdatetController;
   final formKeyUpdate = GlobalKey<FormState>();
 
+  final searchController = TextEditingController();
+
   Future<List<NoteModel>> getData() async {
-    notes = await db.getNotes();
+    if (searchController.text.isNotEmpty) {
+      notes = await db.searchNotes(searchController.text);
+    } else {
+      notes = await db.getNotes();
+    }
     return notes;
   }
 
@@ -112,6 +118,35 @@ class NoteController {
           behavior: SnackBarBehavior.floating,
         ),
       );
+    }
+  }
+
+  Future<bool> deleteData(BuildContext context, {required int noteId}) async {
+    // PORSES DELETE
+    int result = await db.deleteNote(noteId);
+    if (result > 0) {
+      await getData();
+      if (!context.mounted) return true;
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Note deleted successfully!'),
+          backgroundColor: Colors.teal[400],
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      return true;
+    } else {
+      if (!context.mounted) return false;
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Failed to delete note. Please try again.'),
+          backgroundColor: Colors.redAccent,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      return false;
     }
   }
 }

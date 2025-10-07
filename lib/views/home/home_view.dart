@@ -41,6 +41,11 @@ class _HomeViewState extends State<HomeView> {
         child: Column(
           children: [
             TextFormField(
+              controller: noteController.searchController,
+              onChanged: (_) async {
+                await noteController.getData();
+                setState(() {});
+              },
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.search),
                 hintText: "Search Notes",
@@ -82,6 +87,46 @@ class _HomeViewState extends State<HomeView> {
                       itemBuilder: (context, index) {
                         final note = items[index];
                         return ListTile(
+                          trailing: IconButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: const Text('Hapus?'),
+                                  content:
+                                      const Text('Hapus data terpilih ini?'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: const Text('Batal'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () async {
+                                        // PORSES DELETE
+                                        bool hapus = await noteController
+                                            .deleteData(context,
+                                                noteId: note.noteId!);
+                                        if (hapus) {
+                                          setState(() {});
+                                        }
+                                      },
+                                      child: const Text(
+                                        'Iya, Hapus.',
+                                        style: TextStyle(color: Colors.red),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+
+                              // noteController.showDeleteDialog(context,
+                              //     noteId: items[index].noteId!);
+                            },
+                            icon: const Icon(
+                              Icons.delete,
+                              color: Colors.redAccent,
+                            ),
+                          ),
                           onTap: () {
                             Navigator.push(
                               context,
